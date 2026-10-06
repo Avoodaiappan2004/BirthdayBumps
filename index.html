@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Something Special Is Waiting... ✨</title>
+    <meta name="description" content="A mysterious, locked digital birthday experience crafted with love and memories.">
+    <meta name="theme-color" content="#06050c">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- External Canvas Confetti & GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-loading">
+
+    <!-- Global Particle & Starfield Background Canvas -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- Custom Cursor Sparkler Trail for Desktop -->
+    <div id="cursor-trail" aria-hidden="true"></div>
+
+    <!-- Floating Audio & Controls Bar (STRICTLY HIDDEN BEFORE MIDNIGHT) -->
+    <aside class="floating-controls hidden" id="floating-controls" aria-label="Floating Controls">
+        <button id="music-btn" class="control-btn" title="Toggle Birthday BGM" aria-label="Toggle Birthday BGM">
+            <span class="music-icon-wrap">
+                <i class="fa-solid fa-music"></i>
+            </span>
+            <span class="music-visualizer" aria-hidden="true">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </span>
+            <span class="btn-text">🎵 <span id="music-status-text">Playing</span></span>
+        </button>
+
+        <button id="surprise-widget-btn" class="control-btn surprise-btn" title="Random Surprise Me!" aria-label="Surprise Me">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span class="btn-text">Surprise Me ✨</span>
+        </button>
+    </aside>
+
+    <!-- Floating Mini Navigation Bar (STRICTLY HIDDEN BEFORE MIDNIGHT) -->
+    <nav id="floating-nav" class="floating-nav hidden" aria-label="Main Navigation">
+        <div class="nav-container">
+            <a href="#hero-section" class="nav-item active" title="Top"><i class="fa-solid fa-sparkles"></i><span>Intro</span></a>
+            <a href="#photo-reveal-section" class="nav-item" title="Memory Reveal"><i class="fa-solid fa-gift"></i><span>Reveal</span></a>
+            <a href="#gallery-section" class="nav-item" title="Gallery"><i class="fa-regular fa-images"></i><span>Photos</span></a>
+            <a href="#puzzle-section" class="nav-item" title="Puzzle"><i class="fa-solid fa-puzzle-piece"></i><span>Puzzle</span></a>
+            <a href="#timeline-section" class="nav-item" title="Our Story"><i class="fa-solid fa-timeline"></i><span>Story</span></a>
+            <a href="#quotes-section" class="nav-item" title="Quotes"><i class="fa-solid fa-quote-right"></i><span>Quotes</span></a>
+            <a href="#letters-section" class="nav-item" title="Open When"><i class="fa-regular fa-envelope"></i><span>Letters</span></a>
+            <a href="#cake-section" class="nav-item" title="Make A Wish"><i class="fa-solid fa-cake-candles"></i><span>Cake</span></a>
+            <a href="#friendship-meter-section" class="nav-item" title="Friendship Meter"><i class="fa-solid fa-gauge-high"></i><span>Meter</span></a>
+            <a href="#game-section" class="nav-item" title="Memory Game"><i class="fa-solid fa-gamepad"></i><span>Game</span></a>
+            <a href="#quiz-section" class="nav-item" title="Quiz"><i class="fa-solid fa-circle-question"></i><span>Quiz</span></a>
+            <a href="#secret-section" class="nav-item" title="Secret Message"><i class="fa-solid fa-key"></i><span>Secret</span></a>
+            <a href="#final-section" class="nav-item" title="Finale"><i class="fa-solid fa-champagne-glasses"></i><span>Finale</span></a>
+        </div>
+    </nav>
+
+
+    <!-- ========================================== -->
+    <!-- STATE 1: BEFORE THE BIRTHDAY (STRICT LOCK) -->
+    <!-- ========================================== -->
+    <main id="state-countdown" class="experience-state active">
+        
+        <!-- Dreamy Night Sky Background: Glowing Moon & Ambient Orbs -->
+        <div class="locked-sky-backdrop" aria-hidden="true">
+            <div class="glowing-moon" id="glowing-moon">
+                <div class="moon-body"></div>
+                <div class="moon-aura"></div>
+                <div class="moon-haze"></div>
+            </div>
+            <div class="glowing-orb orb-1"></div>
+            <div class="glowing-orb orb-2"></div>
+            <div class="glowing-orb orb-3"></div>
+        </div>
+
+        <div class="countdown-hero-wrapper">
+            <div class="countdown-content glass-card-main">
+                
+                <!-- Interactive Glowing Lock Icon -->
+                <div class="lock-wrapper">
+                    <button id="lock-icon-btn" class="lock-icon-btn pulse-glow" title="Locked until midnight" aria-label="Locked surprise">
+                        <div class="lock-icon-inner" id="lock-icon-inner">
+                            <i class="fa-solid fa-lock" id="main-lock-glyph"></i>
+                        </div>
+                        <div class="lock-ring ring-a"></div>
+                        <div class="lock-ring ring-b"></div>
+                    </button>
+                    <!-- Interactive Lock Toast / Denied Feedback -->
+                    <div id="lock-denied-toast" class="lock-denied-toast hidden">
+                        <span class="denied-primary">Access denied. 🔒</span>
+                        <span class="denied-sub">Come back at exactly midnight. 😌</span>
+                    </div>
+                </div>
+
+                <div class="badge-pill locked-pill">
+                    <i class="fa-solid fa-sparkles"></i>
+                    <span>STRICTLY LOCKED UNTIL MIDNIGHT</span>
+                </div>
+
+                <h1 class="countdown-title">Something Special Is Waiting... ✨</h1>
+                <p class="countdown-subtitle">
+                    This surprise is locked until the right moment.
+                </p>
+
+                <!-- Mystery Orb Element -->
+                <div class="mystery-orb-container" aria-hidden="true">
+                    <div class="mystery-orb-sphere" id="mystery-orb-sphere">
+                        <div class="orb-inner-glow"></div>
+                        <div class="orb-star-core">✨</div>
+                    </div>
+                </div>
+
+                <!-- Glassmorphism 3D Countdown Grid -->
+                <div class="countdown-grid" id="countdown-timer" role="timer" aria-live="polite">
+                    <div class="countdown-box" id="box-days">
+                        <div class="countdown-inner">
+                            <span class="countdown-number" id="count-days">00</span>
+                            <span class="countdown-label">DAYS</span>
+                        </div>
+                        <div class="box-glow"></div>
+                    </div>
+
+                    <div class="countdown-separator">:</div>
+
+                    <div class="countdown-box" id="box-hours">
+                        <div class="countdown-inner">
+                            <span class="countdown-number" id="count-hours">00</span>
+                            <span class="countdown-label">HOURS</span>
+                        </div>
+                        <div class="box-glow"></div>
+                    </div>
+
+                    <div class="countdown-separator">:</div>
+
+                    <div class="countdown-box" id="box-minutes">
+                        <div class="countdown-inner">
+                            <span class="countdown-number" id="count-minutes">00</span>
+                            <span class="countdown-label">MINUTES</span>
+                        </div>
+                        <div class="box-glow"></div>
+                    </div>
+
+                    <div class="countdown-separator">:</div>
+
+                    <div class="countdown-box heartbeat" id="box-seconds">
+                        <div class="countdown-inner">
+                            <span class="countdown-number" id="count-seconds">00</span>
+                            <span class="countdown-label">SECONDS</span>
+                        </div>
+                        <div class="box-glow"></div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Countdown Progress Message -->
+                <div class="countdown-footer-msg">
+                    <i class="fa-solid fa-hourglass-half pulse-heart"></i>
+                    <span id="countdown-dynamic-msg">Something beautiful is getting closer...</span>
+                </div>
+
+                <!-- Hint Button Section -->
+                <div class="hint-section-wrap">
+                    <button id="btn-request-hint" class="action-btn secondary-btn small-btn hint-btn">
+                        <i class="fa-regular fa-lightbulb"></i> Can I get a hint? 👀
+                    </button>
+                    <!-- Hint Response Bubble -->
+                    <div id="hint-response-box" class="hint-response-box hidden">
+                        <span id="hint-response-text">Nice try 😂</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Periodic Random Mystery Hints Banner -->
+            <div id="mystery-hint-banner" class="mystery-hint-banner hidden" aria-live="polite">
+                <i class="fa-solid fa-moon"></i>
+                <span id="mystery-hint-text">Something is waiting...</span>
+            </div>
+
+            <!-- Cinematic 10-Second Countdown Overlay -->
+            <div id="cinematic-countdown-overlay" class="cinematic-overlay hidden" aria-hidden="true">
+                <div class="cinematic-number-wrapper">
+                    <div id="cinematic-number" class="cinematic-number">10</div>
+                    <div class="cinematic-subtext">GET READY FOR MIDNIGHT ✨</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- MIDNIGHT CINEMATIC REVEAL STAGE (12 STEPS) -->
+    <!-- ========================================== -->
+    <div id="midnight-reveal-stage" class="midnight-reveal-stage hidden" aria-hidden="true">
+        <div class="midnight-flash-overlay" id="midnight-flash-overlay"></div>
+        <div class="midnight-expanding-circle" id="midnight-expanding-circle"></div>
+        
+        <div class="midnight-center-anim">
+            <div class="midnight-lock-anim" id="midnight-lock-anim">
+                <i class="fa-solid fa-lock-open"></i>
+            </div>
+            <div class="midnight-reveal-text-wrap">
+                <h2 id="midnight-wait-over" class="midnight-wait-over hidden">THE WAIT IS OVER ✨</h2>
+                <h1 id="midnight-happy-bday" class="midnight-happy-bday hidden">HAPPY BIRTHDAY ❤️</h1>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- AUTOPLAY FALLBACK OVERLAY (IF BLOCKED)    -->
+    <!-- ========================================== -->
+    <div id="unlock-modal-overlay" class="unlock-overlay hidden">
+        <div class="unlock-modal-card glass-card-main">
+            <div class="confetti-icon-burst">🎂✨🎉</div>
+            <h2 class="unlock-modal-title glow-text">Your surprise is ready ❤️</h2>
+            <p class="unlock-modal-subtitle">Midnight has arrived! Tap below to unlock the music and step inside your celebration.</p>
+            
+            <button id="btn-enter-surprise" class="action-btn primary-btn pulse-glow large-cta">
+                <i class="fa-solid fa-music"></i> ENTER YOUR SURPRISE 🎵
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- STATE 2: BIRTHDAY UNLOCKED (FULL STORY)    -->
+    <!-- ========================================== -->
+    <div id="state-unlocked" class="experience-state hidden">
+
+        <!-- 1. HERO SECTION -->
+        <section id="hero-section" class="surprise-section hero-section">
+            <div class="section-container hero-container text-center">
+                <div class="badge-pill hero-pill animate-on-scroll">
+                    <i class="fa-solid fa-crown"></i>
+                    <span>IT'S YOUR SPECIAL DAY</span>
+                </div>
+
+                <h1 class="hero-main-title animate-on-scroll">
+                    HAPPY BIRTHDAY <br>
+                    <span id="friend-name-display" class="highlight-name glow-name">FRIEND ❤️</span>
+                </h1>
+
+                <p class="hero-quote-lead animate-on-scroll">
+                    "Today isn't just another day..."
+                </p>
+                <p class="hero-quote-sub animate-on-scroll">
+                    "Today is the day someone truly special came into this world."
+                </p>
+
+                <div class="hero-cta-wrap animate-on-scroll">
+                    <a href="#photo-reveal-section" class="action-btn primary-btn scroll-cue-btn">
+                        <span>Begin The Journey</span>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                </div>
+
+                <!-- Floating Heart Atmosphere -->
+                <div class="floating-hearts-container" aria-hidden="true">
+                    <span class="f-heart">❤️</span>
+                    <span class="f-heart">✨</span>
+                    <span class="f-heart">💖</span>
+                    <span class="f-heart">🌟</span>
+                    <span class="f-heart">🎉</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 2. PHOTO REVEAL SECTION -->
+        <section id="photo-reveal-section" class="surprise-section photo-reveal-section">
+            <div class="section-container text-center">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-tag">A Special Moment</span>
+                    <h2 class="section-title">Wait... I have something to show you 👀</h2>
+                    <p class="section-desc">Before we dive into the treasure trove of memories, here's a snapshot that says it all.</p>
+                </div>
+
+                <div class="reveal-stage animate-on-scroll">
+                    <div id="reveal-placeholder" class="reveal-placeholder-box">
+                        <div class="mystery-lock-icon">
+                            <i class="fa-solid fa-gift fa-shake"></i>
+                        </div>
+                        <p class="reveal-prompt-text">A precious memory is locked inside...</p>
+                        <button id="btn-reveal-memory" class="action-btn glow-btn">
+                            <i class="fa-solid fa-sparkles"></i> Reveal The Memory ✨
+                        </button>
+                    </div>
+
+                    <!-- Revealed Photo Container -->
+                    <div id="revealed-photo-card" class="revealed-photo-card hidden">
+                        <div class="photo-frame">
+                            <img id="featured-reveal-img" src="assets/photo1.jpg" alt="Special Memory with Friend" loading="lazy">
+                            <div class="photo-glow-border"></div>
+                        </div>
+                        <div class="photo-caption-box">
+                            <h3 id="reveal-photo-title">That Radiant Smile ❤️</h3>
+                            <p id="reveal-photo-desc">"Some moments make time stand completely still. This will always be one of my favorite memories with you."</p>
+                        </div>
+                        <div class="reveal-switcher">
+                            <button id="btn-next-reveal" class="action-btn secondary-btn small-btn">
+                                <span>Show Another Memory</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 3. MEMORY GALLERY SECTION (Polaroid & Scattered Aesthetic) -->
+        <section id="gallery-section" class="surprise-section gallery-section">
+            <div class="section-container">
+                <div class="section-header text-center animate-on-scroll">
+                    <span class="section-tag">Treasured Chapters</span>
+                    <h2 class="section-title">The Memory Gallery 📸</h2>
+                    <p class="section-desc">Scattered snapshots of our laughter, adventures, and chaos. Click any card to explore full screen!</p>
+                </div>
+
+                <!-- Scattered Polaroid Interactive Grid -->
+                <div class="polaroid-canvas" id="polaroid-grid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 4. FULLSCREEN LIGHTBOX MODAL -->
+        <div id="lightbox-modal" class="lightbox-modal hidden" role="dialog" aria-modal="true" aria-label="Photo Lightbox">
+            <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+            <div class="lightbox-content">
+                <button id="lightbox-close-btn" class="lightbox-close" aria-label="Close Lightbox">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <button id="lightbox-prev-btn" class="lightbox-nav-btn prev-btn" aria-label="Previous Photo">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                
+                <div class="lightbox-img-wrapper">
+                    <img id="lightbox-img" src="" alt="Enlarged Memory">
+                    <div class="lightbox-caption" id="lightbox-caption">Photo Caption</div>
+                </div>
+
+                <button id="lightbox-next-btn" class="lightbox-nav-btn next-btn" aria-label="Next Photo">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- 5. PHOTO JIGSAW PUZZLE SECTION (CORRECTLY REVEALING COMPLETED PHOTO) -->
+        <section id="puzzle-section" class="surprise-section puzzle-section">
+            <div class="section-container">
+                <div class="section-header text-center animate-on-scroll">
+                    <span class="section-tag">Interactive Challenge</span>
+                    <h2 class="section-title">Can you put this memory back together? 🧩</h2>
+                    <p class="section-desc">Drag, drop, or tap each puzzle piece into place to reconstruct our special memory!</p>
+                </div>
+
+                <div class="puzzle-wrapper glass-card-main animate-on-scroll">
+                    <div class="puzzle-dashboard">
+                        <div class="puzzle-stats">
+                            <span class="stat-pill"><i class="fa-solid fa-arrows-spin"></i> Moves: <strong id="puzzle-moves">0</strong></span>
+                            <span class="stat-pill"><i class="fa-regular fa-clock"></i> Time: <strong id="puzzle-timer">00:00</strong></span>
+                            <span class="stat-pill"><i class="fa-solid fa-bullseye"></i> Placed: <strong id="puzzle-placed">0 / 9</strong></span>
+                        </div>
+                        <div class="puzzle-controls">
+                            <button id="puzzle-start-btn" class="action-btn primary-btn small-btn">
+                                <i class="fa-solid fa-shuffle"></i> Solve The Puzzle
+                            </button>
+                            <button id="puzzle-preview-btn" class="action-btn secondary-btn small-btn">
+                                <i class="fa-regular fa-eye"></i> Preview Image
+                            </button>
+                            <button id="puzzle-auto-solve" class="action-btn secondary-btn small-btn" title="Quick solve if stuck">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Assist
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Puzzle Playing Arena (Active during play) -->
+                    <div class="puzzle-arena" id="puzzle-interactive-arena">
+                        <!-- Target Board Grid -->
+                        <div class="puzzle-board-container">
+                            <div class="puzzle-board" id="puzzle-board" aria-label="Puzzle Target Board">
+                                <!-- Generated Slots -->
+                            </div>
+                        </div>
+
+                        <!-- Scrambled Pieces Pool -->
+                        <div class="puzzle-pieces-pool-container">
+                            <div class="pool-header">Available Pieces:</div>
+                            <div class="puzzle-pieces-pool" id="puzzle-pool">
+                                <!-- Generated draggable pieces -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DEDICATED COMPLETE PHOTO REVEAL CARD (EXPLICITLY REVEALED ON COMPLETION) -->
+                    <div id="puzzle-completed-card" class="puzzle-completed-card hidden">
+                        <div class="completed-celebration-badge">
+                            <span class="badge-icon">🎉🏆✨</span>
+                            <h3 class="completed-title glow-text">YOU DID IT! ❤️</h3>
+                            <p class="completed-subtitle">A memory worth putting back together.</p>
+                        </div>
+
+                        <!-- Dedicated Full Image Showcase -->
+                        <div class="completed-photo-frame">
+                            <img id="puzzle-full-image" src="assets/puzzle.jpg" alt="Complete Solved Memory" class="puzzle-full-image" loading="lazy">
+                            <div class="photo-glow-border"></div>
+                        </div>
+
+                        <div class="completed-card-actions">
+                            <button id="puzzle-replay-btn" class="action-btn primary-btn">
+                                <i class="fa-solid fa-rotate-right"></i> Play Again
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 6. FRIENDSHIP TIMELINE SECTION -->
+        <section id="timeline-section" class="surprise-section timeline-section">
+            <div class="section-container">
+                <div class="section-header text-center animate-on-scroll">
+                    <span class="section-tag">Milestones & Memories</span>
+                    <h2 class="section-title">Our Little Story ❤️</h2>
+                    <p class="section-desc">From random hello's to an unbreakable bond. Here is how our journey unfolded.</p>
+                </div>
+
+                <div class="timeline-wrapper">
+                    <div class="timeline-beam" id="timeline-beam"></div>
+                    <div class="timeline-items" id="timeline-items-container">
+                        <!-- Populated dynamically via script.js -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 7. QUOTES GENERATOR SECTION -->
+        <section id="quotes-section" class="surprise-section quotes-section">
+            <div class="section-container text-center">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-tag">Words From The Heart</span>
+                    <h2 class="section-title">Friendship Thoughts & Quotes ✨</h2>
+                    <p class="section-desc">Handpicked reminders of how much your friendship means.</p>
+                </div>
+
+                <div class="quote-card-wrapper animate-on-scroll">
+                    <div class="quote-glass-card" id="quote-card">
+                        <div class="quote-watermark"><i class="fa-solid fa-quote-left"></i></div>
+                        <div class="quote-body">
+                            <p id="quote-text" class="quote-text">"Friends like you make ordinary days feel extraordinary."</p>
+                            <span id="quote-author" class="quote-author">— To My Best Friend</span>
+                        </div>
+                        <div class="quote-actions">
+                            <button id="btn-next-quote" class="action-btn primary-btn">
+                                <i class="fa-solid fa-rotate"></i> Give Me Another Quote ✨
+                            </button>
+                            <button id="btn-copy-quote" class="action-btn secondary-btn" title="Copy Quote">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 8. "OPEN WHEN..." LETTERS SECTION -->
+        <section id="letters-section" class="surprise-section letters-section">
+            <div class="section-container">
+                <div class="section-header text-center animate-on-scroll">
+                    <span class="section-tag">Little Envelopes Of Warmth</span>
+                    <h2 class="section-title">Open These When You Need Them 💌</h2>
+                    <p class="section-desc">Whenever you need a smile, a reminder, or a virtual hug, click any letter below to open it.</p>
+                </div>
+
+                <div class="letters-grid" id="letters-grid">
+                    <!-- Populated dynamically via script.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Letter Modal Reader -->
+        <div id="letter-modal" class="letter-modal hidden" role="dialog" aria-modal="true">
+            <div class="letter-modal-backdrop" id="letter-modal-backdrop"></div>
+            <div class="letter-paper-card">
+                <button id="letter-close-btn" class="letter-close" aria-label="Close Letter">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="letter-stamp"><i class="fa-solid fa-heart"></i> FOR YOU</div>
+                <div class="letter-heading" id="letter-modal-title">Open When You're Sad</div>
+                <div class="letter-content-text" id="letter-modal-body">
+                    Handwritten letter message goes here...
+                </div>
+                <div class="letter-sign" id="letter-modal-signature">With all my love ❤️<br>Your Best Friend</div>
+            </div>
+        </div>
+
+
+        <!-- 9. BIRTHDAY CAKE & CANDLE BLOW INTERACTION -->
+        <section id="cake-section" class="surprise-section cake-section">
+            <div class="section-container text-center">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-tag">A Birthday Tradition</span>
+                    <h2 class="section-title">Make A Wish & Blow The Candles 🎂</h2>
+                    <p class="section-desc">Close your eyes, think of your biggest dream for this year, and click the cake to blow out the candles!</p>
+                </div>
+
+                <div class="cake-interactive-stage animate-on-scroll">
+                    <div id="cake-stage" class="cake-stage" title="Click or tap to blow candles">
+                        <!-- SVG / CSS Interactive Birthday Cake -->
+                        <div class="cake-wrapper">
+                            <!-- Candles & Flames -->
+                            <div class="candles-row" id="candles-row">
+                                <div class="candle c-1">
+                                    <div class="flame" id="flame-1"><div class="flame-inner"></div></div>
+                                    <div class="smoke" id="smoke-1"></div>
+                                    <div class="stick"></div>
+                                </div>
+                                <div class="candle c-2">
+                                    <div class="flame" id="flame-2"><div class="flame-inner"></div></div>
+                                    <div class="smoke" id="smoke-2"></div>
+                                    <div class="stick"></div>
+                                </div>
+                                <div class="candle c-3">
+                                    <div class="flame" id="flame-3"><div class="flame-inner"></div></div>
+                                    <div class="smoke" id="smoke-3"></div>
+                                    <div class="stick"></div>
+                                </div>
+                                <div class="candle c-4">
+                                    <div class="flame" id="flame-4"><div class="flame-inner"></div></div>
+                                    <div class="smoke" id="smoke-4"></div>
+                                    <div class="stick"></div>
+                                </div>
+                                <div class="candle c-5">
+                                    <div class="flame" id="flame-5"><div class="flame-inner"></div></div>
+                                    <div class="smoke" id="smoke-5"></div>
+                                    <div class="stick"></div>
+                                </div>
+                            </div>
+
+                            <!-- Cake Tiers -->
+                            <div class="cake-tier tier-top">
+                                <div class="frosting-drops"></div>
+                                <div class="cake-decorations">🍓 🍒 🍓</div>
+                            </div>
+                            <div class="cake-tier tier-middle">
+                                <div class="frosting-drops"></div>
+                                <div class="cake-piping">✨ ⭐ ✨</div>
+                            </div>
+                            <div class="cake-tier tier-bottom">
+                                <div class="cake-message">HAPPY BIRTHDAY</div>
+                            </div>
+                            <div class="cake-plate"></div>
+                        </div>
+                    </div>
+
+                    <!-- Candle Action Cue -->
+                    <div class="cake-action-cue">
+                        <button id="btn-blow-candles" class="action-btn glow-btn pulse-btn">
+                            <i class="fa-solid fa-wind"></i> Click to Blow Out Candles 💨
+                        </button>
+                        <button id="btn-relight-candles" class="action-btn secondary-btn small-btn hidden">
+                            <i class="fa-solid fa-fire"></i> Relight Candles 🕯️
+                        </button>
+                    </div>
+
+                    <!-- Wish Accepted Notification -->
+                    <div id="wish-accepted-banner" class="wish-banner hidden">
+                        <div class="wish-banner-inner">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <h3>Wish Accepted ✨</h3>
+                            <p>May every single wish you made today come true in the most magical way!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 10. FRIENDSHIP METER SECTION -->
+        <section id="friendship-meter-section" class="surprise-section meter-section">
+            <div class="section-container text-center">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-tag">Scientific Calculation</span>
+                    <h2 class="section-title">The Friendship Meter 📊</h2>
+                    <p class="section-desc">Analyzing humor compatibility, shared secrets, and pure madness levels...</p>
+                </div>
+
+                <div class="meter-wrapper glass-card-main animate-on-scroll">
+                    <div class="meter-gauge-container">
+                        <svg class="meter-svg" viewBox="0 0 200 200">
+                            <circle class="meter-bg-circle" cx="100" cy="100" r="80"></circle>
+                            <circle class="meter-progress-circle" id="meter-circle" cx="100" cy="100" r="80"></circle>
+                        </svg>
+                        <div class="meter-center-text">
+                            <div class="meter-number" id="meter-percent-display">0%</div>
+                            <div class="meter-sublabel">Compatibility</div>
+                        </div>
+                    </div>
+
+                    <div class="meter-status-box">
+                        <div id="meter-status-title" class="meter-status-title">Ready to calibrate</div>
+                        <p id="meter-status-desc" class="meter-status-desc">Press the scanner below to calculate our official friendship score.</p>
+                    </div>
+
+                    <div class="meter-action-wrap">
+                        <button id="btn-scan-friendship" class="action-btn primary-btn">
+                            <i class="fa-solid fa-fingerprint"></i> Scan Friendship Level
+                        </button>
+                    </div>
+
+                    <div id="meter-breakdown" class="meter-breakdown-grid hidden">
+                        <div class="breakdown-card">
+                            <span class="b-icon">😂</span>
+                            <span class="b-label">Chaos & Banter</span>
+                            <span class="b-val">999%</span>
+                        </div>
+                        <div class="breakdown-card">
+                            <span class="b-icon">🍕</span>
+                            <span class="b-label">Snack Sharing</span>
+                            <span class="b-val">100%</span>
+                        </div>
+                        <div class="breakdown-card">
+                            <span class="b-icon">🛡️</span>
+                            <span class="b-label">Loyalty & Trust</span>
+                            <span class="b-val">Infinity %</span>
+                        </div>
+                        <div class="breakdown-card">
+                            <span class="b-icon">📞</span>
+                            <span class="b-label">Late Night Rants</span>
+                            <span class="b-val">100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 11. MINI MEMORY MATCHING GAME -->
+        <section id="game-section" class="surprise-section game-section">
+            <div class="section-container text-center">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-tag">Playful Arcade</span>
+                    <h2 class="section-title">Memory Matching Mini-Game 🃏</h2>
+                    <p class="section-desc">Flip cards to match the pairs of our favorite friendship icons and unlock a secret bonus message!</p>
+                </div>
+
+                <div class="game-wrapper glass-card-main animate-on-scroll">
+                    <div class="game-stats-bar">
+                        <span class="stat-pill"><i class="fa-solid fa-shuffle"></i> Flips: <strong id="game-flips">0</strong></span>
+                        <span class="stat-pill"><i class="fa-solid fa-check-double"></i> Matches: <strong id="game-matches">0 / 6</strong></span>
+                        <button id="btn-restart-game" class="action-btn secondary-btn small-btn">
+                            <i class="fa-solid fa-rotate-right"></i> Reset Game
+                        </button>
+                    </div>
+
+                    <div class="memory-cards-grid" id="memory-cards-grid">
+                        <!-- Populated dynamically via script.js -->
+                    </div>
+
+                    <!-- Game Win Box -->
+                    <div id="game-win-box" class="game-win-box hidden">
+                        <div class="win-card-inner">
+                            <div class="trophy-bounce">🏆🌟✨</div>
+                            <h3>You actually remember our memories! 😂❤️</h3>
+                            <p>Unlocked Secret Note: "You're truly one in a billion. Thank you for making life so much brighter."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 12. PERSONALITY QUIZ: HOW WELL DO YOU KNOW ME? -->
+        <section id="quiz-section" class="surprise-section quiz-section">
+            <div class="section-container">
+                <div class="section-header text-center animate-on-scroll">
+                    <span class="section-tag">Playful Test</span>
+                    <h2 class="section-title">How Well Do You Know Me? 👀</h2>
+                    <p class="section-desc">Answer 5 quick multiple-choice questions about our friendship madness!</p>
+                </div>
+
+                <div class="quiz-wrapper glass-card-main animate-on-scroll">
+                    <!-- Quiz Progress Bar -->
+                    <div class="quiz-progress-bar-wrap">
+                        <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div id="quiz-question-box" class="quiz-question-box">
+                        <div class="quiz-q-number" id="quiz-q-number">Question 1 of 5</div>
+                        <h3 class="quiz-q-title" id="quiz-q-title">Who is more likely to be late?</h3>
+                        
+                        <div class="quiz-options-list" id="quiz-options-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Quiz Result Box (Hidden until done) -->
+                    <div id="quiz-result-box" class="quiz-result-box hidden text-center">
+                        <div class="quiz-result-badge" id="quiz-result-badge">🏆 Bestie Certified!</div>
+                        <h3 id="quiz-result-title" class="glow-text">Okay... you actually know me 😂❤️</h3>
+                        <p id="quiz-result-desc">You scored 5 out of 5! We basically share the same brain cell at this point.</p>
+                        
+                        <button id="btn-retake-quiz" class="action-btn secondary-btn small-btn">
+                            <i class="fa-solid fa-rotate-right"></i> Retake Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 13. SECRET HIDDEN MESSAGE SECTION -->
+        <section id="secret-section" class="surprise-section secret-section">
+            <div class="section-container text-center">
+                <div class="section-header animate-on-scroll">
+                    <span class="section-tag">Classified & Special</span>
+                    <h2 class="section-title">There is one more thing... 🤫</h2>
+                    <p class="section-desc">A locked cosmic vault awaits your touch.</p>
+                </div>
+
+                <div class="secret-stage animate-on-scroll">
+                    <div class="secret-orb-container">
+                        <button id="secret-orb-btn" class="secret-orb-btn pulse-glow" aria-label="Find the secret">
+                            <div class="orb-core">
+                                <i class="fa-solid fa-key"></i>
+                            </div>
+                            <div class="orb-ring ring-1"></div>
+                            <div class="orb-ring ring-2"></div>
+                            <div class="orb-ring ring-3"></div>
+                        </button>
+                        <div class="secret-prompt">Find the secret ✨ (Click the Orb)</div>
+                    </div>
+
+                    <!-- Secret Reveal Modal/Card -->
+                    <div id="secret-message-box" class="secret-message-box hidden glass-card-main">
+                        <div class="secret-inner-content">
+                            <div class="secret-heart-glow">💖</div>
+                            <h3 class="secret-title glow-text">You are one of the most important people in my life. ❤️</h3>
+                            <p class="secret-body-text">
+                                In a world full of noise, genuine friendships are rare and precious treasures. 
+                                Thank you for every listening ear, every unhinged laugh, every piece of advice, 
+                                and for simply being YOU. Never doubt how loved and appreciated you are today and every day.
+                            </p>
+                            <div class="secret-stamp">Forever & Always ✨</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 14. FINAL GRAND SURPRISE FINALE -->
+        <section id="final-section" class="surprise-section final-section">
+            <div class="section-container text-center">
+                
+                <div id="final-teaser" class="final-teaser animate-on-scroll">
+                    <button id="btn-final-surprise" class="action-btn glow-btn large-cta pulse-btn">
+                        <i class="fa-solid fa-champagne-glasses"></i> One Last Thing... ✨
+                    </button>
+                </div>
+
+                <!-- Final Unveiled Stage -->
+                <div id="final-unveiled-stage" class="final-unveiled-stage hidden">
+                    <div class="finale-card glass-card-main">
+                        <div class="finale-header">
+                            <div class="finale-badge">A Heartfelt Note</div>
+                            <h2 class="finale-title glow-text">Thank you for being part of my story. ❤️</h2>
+                            <h3 class="finale-subtitle">HAPPY BIRTHDAY, <span id="final-friend-name">FRIEND</span>! 🎂🎉</h3>
+                        </div>
+
+                        <div class="finale-photo-wrap">
+                            <img src="assets/final.jpg" alt="Finale Celebration" class="finale-photo" loading="lazy">
+                            <div class="photo-glow-border"></div>
+                        </div>
+
+                        <div class="finale-message-box">
+                            <p class="finale-closing-text">
+                                "Here's to more memories, more laughter, more madness, and many more birthdays together. 🥂❤️"
+                            </p>
+                            <p class="finale-subtext">
+                                May this upcoming year bring you endless happiness, radiant health, unmatched success, and dreams fulfilled!
+                            </p>
+                        </div>
+
+                        <div class="finale-actions">
+                            <button id="btn-fireworks-burst" class="action-btn primary-btn">
+                                <i class="fa-solid fa-sparkles"></i> Launch Fireworks! 🎆
+                            </button>
+                            <a href="#hero-section" class="action-btn secondary-btn">
+                                <i class="fa-solid fa-arrow-up"></i> Back to Top
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer text-center">
+            <p>Made with all my heart for <span id="footer-friend-name">My Best Friend</span> ❤️ | Forever & Always</p>
+        </footer>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- RANDOM SURPRISE ME MODAL                   -->
+    <!-- ========================================== -->
+    <div id="surprise-modal" class="surprise-modal hidden" role="dialog" aria-modal="true">
+        <div class="surprise-modal-backdrop" id="surprise-modal-backdrop"></div>
+        <div class="surprise-modal-card glass-card-main text-center">
+            <button id="surprise-modal-close" class="surprise-close" aria-label="Close Surprise">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="surprise-emoji" id="surprise-emoji">🎁✨</div>
+            <h3 class="surprise-title" id="surprise-title">A Little Burst Of Joy</h3>
+            <div class="surprise-body" id="surprise-body">
+                Surprise content...
+            </div>
+            <button id="surprise-another-btn" class="action-btn primary-btn small-btn">
+                <i class="fa-solid fa-shuffle"></i> Another Surprise ✨
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- AUDIO ELEMENT FOR BIRTHDAY MUSIC           -->
+    <!-- ========================================== -->
+    <audio id="bgm-audio" loop preload="auto" src="assets/birthday.mp3"></audio>
+
+    <!-- Main Logic Script -->
+    <script src="script.js"></script>
+</body>
+</html>
