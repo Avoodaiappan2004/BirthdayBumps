@@ -14,7 +14,7 @@ const birthdayConfig = {
 
     // Birthday Date & Time (Strictly interpreted as LOCAL TIME)
     // Locked until exactly 12:00 AM midnight on this date!
-    birthdayDate: "2026-10-06T20:00:00",
+    birthdayDate: "2026-10-06T19:40:00",
 
     // Birthday BGM File (Plays only when birthday unlocks at midnight)
     music: "assets/birthday.mp3",
